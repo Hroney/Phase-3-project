@@ -8,13 +8,17 @@ import os
 ### Campaign Helpers ###
 def list_campaigns():
     campaigns = Campaign.get_all()
+    clear_console()
     for campaign in campaigns:
         print(campaign)
     print("\n")
 
 def create_campaign():
-    campaign_name_ = input("Enter campaign name: ")
-    dungeon_master_ = int(input("Enter Dungeon Master's ID number: "))
+    print("Enter campaign name")
+    campaign_name_ = input("> ")
+    print("Enter Dungeon Master's ID number")
+    dungeon_master_ = int(input("> "))
+    clear_console()
     try:
         campaign_ = Campaign.create(campaign_name_, dungeon_master_)
     except Exception as exc:
@@ -25,20 +29,26 @@ def create_campaign():
         print(f'Error: Campaign not created. Dungeon Master not in Database. \n')
 
 def find_by_name_campaign():
-    campaign_name_ = input("Enter the name of the Campaign: ")
+    print("Enter the name of the Campaign")
+    campaign_name_ = input("> ")
+    clear_console()
     campaign = Campaign.find_by_name(campaign_name_)
     print(campaign) if campaign else print (f'{campaign_name_} is not found.')
     print("\n")
 
 def find_by_id_campaign():
-    campaign_id_ = input("Enter the ID of the Campaign: ")
+    print("Enter the ID of the Campaign")
+    campaign_id_ = input("> ")
+    clear_console()
     campaign_ = Campaign.find_by_id(campaign_id_)
     print(campaign_) if campaign_ else print (f'Campaign {campaign_id_} not found.')
     print("\n")
 
 def update_campaign():
-    campaign_id_ = input("Enter the ID of the Campaign: ")
+    print("Enter the ID of the Campaign")
+    campaign_id_ = input("> ")
     if campaign := Campaign.find_by_id(campaign_id_):
+        clear_console()
         print(f'{campaign}')
         try:
             updatemenu()
@@ -91,12 +101,28 @@ def updatemenu():
     print("1. Campaign Name")
     print("2. Dungeon Master")
     print("3. Both")
-    print("\n4. Go Back")
+    print("\n0. Go Back")
     print("___________________________")
 
+def delete_campaign():
+    print("Enter the Campaign's id")
+    campaign_id_ = input("> ")
+    if campaign_ := Campaign.find_by_id(campaign_id_):
+        campaign_.delete()
+        clear_console()
+        print(f'Campaign {campaign_id_} deleted.')
+    else:
+        clear_console()
+        print(f'Campaign {campaign_id_} not found.')
 
 
-
+### Dungeon Master Helpers ###
+def list_dungeonmasters():
+    dungeon_masters = DungeonMaster.get_all()
+    clear_console()
+    for dungeon_master in dungeon_masters:
+        print(dungeon_master)
+    print("\n")
 
 
 
