@@ -4,7 +4,7 @@ class DungeonMasterMethods:
 
     @classmethod
     def create_table(cls):
-        """Create a new table to persist the attributes of the Campaign"""
+        """Create a new table to persist the attributes of the Dungeon Master"""
         sql = """
             CREATE TABLE IF NOT EXISTS dungeonmasters (
             id INTEGER PRIMARY KEY,
@@ -16,7 +16,7 @@ class DungeonMasterMethods:
 
     @classmethod
     def drop_table(cls):
-        """ Drop the table that persists Campaign instances """
+        """ Drop the table that persists Dungeon Master instances """
         sql = """
             DROP TABLE IF EXISTS dungeonmasters;
         """
@@ -77,7 +77,7 @@ class DungeonMasterMethods:
         sql = """
             SELECT *
             FROM dungeonmasters
-            WHERE name is ?
+            WHERE dungeonmaster is ?
         """
 
         row = CURSOR.execute(sql, (dungeonmaster,)).fetchone()
@@ -99,7 +99,7 @@ class DungeonMasterMethods:
         type(self).all[self.id] = self
 
     def update(self):
-        """Update the table row corresponding to the current Campaign instance."""
+        """Update the table row corresponding to the current Dungeon Master instance."""
         sql = """
             UPDATE dungeonmasters
             SET name = ?, modality = ?
@@ -109,7 +109,7 @@ class DungeonMasterMethods:
         CONN.commit()
 
     def delete(self):
-        """Delete the table row corresponding to the current Campaign instance,
+        """Delete the table row corresponding to the current Dungeon Master instance,
         delete the dictionary entry, and reassign id attribute"""
 
         sql = """

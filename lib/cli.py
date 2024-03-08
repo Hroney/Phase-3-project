@@ -14,9 +14,11 @@ from helpers import (
     find_by_name_dungeon_master,
     create_dungeon_master,
     update_dungeon_master,
-    delete_dungeon_master
+    delete_dungeon_master,
+    list_campaigns_by_dungeon_master
 )
 
+### Main Menu ###
 
 def main():
     while True:
@@ -39,14 +41,14 @@ def main():
 
 def main_menu():
     print("\n_________Main_Menu_________")
-    print("Please select an option:\n")
+    print("  Please select an option:\n")
     print("1. Campaign Menu")
     print("2. Dungeon Master Menu")
 
     print("\n0. Exit the program")
     print("___________________________")
 
-
+### Campaign Menu ###
 def campaign_menu_choice():
     while True:
         campaign_menu()
@@ -66,9 +68,12 @@ def campaign_menu_choice():
         elif campaign_choice == "6":
             delete_campaign()
 
+        else:
+            clear_console()
+
 def campaign_menu():
     print("\n_______Campaign_Menu_______")
-    print("Please select an option:\n")
+    print("  Please select an option:\n")
     print("1. List all Campaign's")
     print("2. Find Campaign by Name")
     print("3. Find Campaign by ID")
@@ -78,6 +83,8 @@ def campaign_menu():
 
     print("\n0. Go back to Main Menu")
     print("___________________________")
+
+### Dungeon Master Menu ###
 
 def dungeon_master_menu_choice():
     while True:
@@ -97,16 +104,24 @@ def dungeon_master_menu_choice():
             update_dungeon_master()
         elif dungeon_master_choice == "6":
             delete_dungeon_master()
+        elif dungeon_master_choice == "7":
+            list_campaigns_by_dungeon_master()
+        
+        else:
+            clear_console()
+        
+        
 
 def dungeon_master_menu():
     print("\n____Dungeon_Master_Menu____")
-    print("Please select an option:\n")
-    print("1. List all Dungeon Master's")
+    print("  Please select an option:\n")
+    print("1. List all Dungeon Masters")
     print("2. Find Dungeon Master by Name")
     print("3. Find Dungeon Master by ID")
     print("4. Create Dungeon Master")
     print("5. Update Dungeon Master")
     print("6. Delete Dungeon Master")
+    print("7. Find Campaigns by Dungeon Master")
 
     print("\n0. Go Back to Main Menu")
     print("___________________________")

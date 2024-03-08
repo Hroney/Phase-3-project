@@ -1,6 +1,8 @@
 # lib/helpers.py
 from models.campaign.Campaign import Campaign
 from models.dungeon_master.Dungeon_Master import DungeonMaster
+from models.player.Player import Player
+from models.player_campaign.Player_Campaign import PlayerCampaign
 import os
 
 
@@ -254,9 +256,56 @@ def delete_dungeon_master():
         clear_console()
         print(f'Dungeon Master {dungeon_master_id_} not found.')
 
+def list_campaigns_by_dungeon_master():
+    print("Enter the ID of the Dungeon Master")
+    dungeon_master_id_ = input("> ")
+    campaigns_ = Campaign.get_all()
+    atleastone = 0
+    clear_console()
+    for campaign_ in campaigns_:
+        if int(campaign_.dungeon_master_id) == int(dungeon_master_id_):
+            print(campaign_)
+            atleastone += 1
+    if atleastone == 0:
+        if DungeonMaster.find_by_id(dungeon_master_id_):
+            print(f"No Campaigns found for {DungeonMaster.find_by_id(dungeon_master_id_).name}")
+        else:
+            print(f"{dungeon_master_id_} is not a valid dungeon master ID")
+
+### Player Helpers ###
+
+def list_players():
+    dungeon_masters = DungeonMaster.get_all()
+    clear_console()
+    for dungeon_master in dungeon_masters:
+        print(dungeon_master)
+
+def find_by_name_player():
+    print("Enter the name of the Dungeon Master")
+    player_ = input("> ")
+    clear_console()
+    player = Player.find_by_name(player_)
+    print(player) if player else print (f'{player_} is not found.')
+
+def find_by_id_dungeon_master():
+    print("Enter the ID of the Dungeon Master")
+    player_id_ = input("> ")
+    clear_console()
+    player_ = Player.find_by_id(player_id_)
+    print(player_) if player_ else print (f'Dungeon Master ID: {player_id_} not found.')
 
 
 
+
+def add_campaign():
+    print("Enter the ID of the Player")
+    player_id_ = input("> ")
+    print("Enter the ID of the Campaign")
+    campaign_id_ = input("> ")
+    try:
+        PlayerCampaign.create(player_id_, campaign_id_)
+    except Exception as exc:
+        print("Raised Exception, ", exc)
 
 
 
