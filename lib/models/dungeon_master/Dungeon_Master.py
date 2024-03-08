@@ -11,7 +11,7 @@ class DungeonMaster(DungeonMasterMethods):
         self.id = id
 
     def __repr__(self):
-        return f"({self.id}) Dungeon Master: {self.name}, Sessions are held: {self.modality}"
+        return f"({self.id}) Name: {self.name}, Sessions are held: {self.modality}"
 
     @property
     def name(self):

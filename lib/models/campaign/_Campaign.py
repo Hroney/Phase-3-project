@@ -34,11 +34,12 @@ class CampaignMethods:
                 return campaign
             except Exception as exc:
                 print("Error creating Campaign: ", exc)
+        else:
+            print("Dungeon Master not found")
         
     @classmethod
     def instance_from_db(cls, row):
         """Return a Campaign object having the attribute values from the table row."""
-
         # Check the dictionary for an existing instance using the row's primary key
         campaign = cls.all.get(row[0])
         if campaign:

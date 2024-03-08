@@ -9,7 +9,12 @@ from helpers import (
     find_by_id_campaign,
     update_campaign,
     delete_campaign,
-    list_dungeonmasters
+    list_dungeonmasters,
+    find_by_id_dungeon_master,
+    find_by_name_dungeon_master,
+    create_dungeon_master,
+    update_dungeon_master,
+    delete_dungeon_master
 )
 
 
@@ -33,7 +38,7 @@ def main():
 
 
 def main_menu():
-    print("_________Main_Menu_________")
+    print("\n_________Main_Menu_________")
     print("Please select an option:\n")
     print("1. Campaign Menu")
     print("2. Dungeon Master Menu")
@@ -62,7 +67,7 @@ def campaign_menu_choice():
             delete_campaign()
 
 def campaign_menu():
-    print("_______Campaign_Menu_______")
+    print("\n_______Campaign_Menu_______")
     print("Please select an option:\n")
     print("1. List all Campaign's")
     print("2. Find Campaign by Name")
@@ -82,11 +87,26 @@ def dungeon_master_menu_choice():
             break
         elif dungeon_master_choice == "1":
             list_dungeonmasters()
+        elif dungeon_master_choice == "2":
+            find_by_name_dungeon_master()
+        elif dungeon_master_choice == "3":
+            find_by_id_dungeon_master()
+        elif dungeon_master_choice == "4":
+            create_dungeon_master()
+        elif dungeon_master_choice == "5":
+            update_dungeon_master()
+        elif dungeon_master_choice == "6":
+            delete_dungeon_master()
 
 def dungeon_master_menu():
-    print("____Dungeon_Master_Menu____")
+    print("\n____Dungeon_Master_Menu____")
     print("Please select an option:\n")
     print("1. List all Dungeon Master's")
+    print("2. Find Dungeon Master by Name")
+    print("3. Find Dungeon Master by ID")
+    print("4. Create Dungeon Master")
+    print("5. Update Dungeon Master")
+    print("6. Delete Dungeon Master")
 
     print("\n0. Go Back to Main Menu")
     print("___________________________")
