@@ -107,12 +107,17 @@ def delete_campaign():
     print("Enter the Campaign's id")
     campaign_id_ = input("> ")
     if campaign_ := Campaign.find_by_id(campaign_id_):
+        player_campaigns_ = PlayerCampaign.get_all()
+        for player_campaign_ in player_campaigns_:
+            if player_campaign_.campaign == int(campaign_id_):
+                player_campaign_.delete()
         campaign_.delete()
         clear_console()
         print(f'Campaign {campaign_id_} deleted.')
     else:
         clear_console()
         print(f'Campaign {campaign_id_} not found.')
+
 
 
 ### Dungeon Master Helpers ###
@@ -204,7 +209,7 @@ def update_dungeon_master():
             print("Error updating Dungeon Master: ", exc, "\n")
     else:
         clear_console()
-        print(f'Campaign {dungeon_master_id_} not found.\n')
+        print(f'Dungeon Master {dungeon_master_id_} not found.\n')
 
 def updatemenu_dungeon_master():
     print("\n________Update_Menu________")
@@ -262,40 +267,117 @@ def list_campaigns_by_dungeon_master():
     campaigns_ = Campaign.get_all()
     atleastone = 0
     clear_console()
-    for campaign_ in campaigns_:
-        if int(campaign_.dungeon_master_id) == int(dungeon_master_id_):
-            print(campaign_)
-            atleastone += 1
-    if atleastone == 0:
-        if DungeonMaster.find_by_id(dungeon_master_id_):
-            print(f"No Campaigns found for {DungeonMaster.find_by_id(dungeon_master_id_).name}")
-        else:
-            print(f"{dungeon_master_id_} is not a valid dungeon master ID")
+    if dungeon_master_id_.isnumeric():
+        for campaign_ in campaigns_:
+            if int(campaign_.dungeon_master_id) == int(dungeon_master_id_):
+                print(campaign_)
+                atleastone += 1
+        if atleastone == 0:
+            if DungeonMaster.find_by_id(dungeon_master_id_):
+                print(f"No Campaigns found for {DungeonMaster.find_by_id(dungeon_master_id_).name}")
+            else:
+                print(f"{dungeon_master_id_} is not a valid dungeon master ID")
 
 ### Player Helpers ###
 
 def list_players():
-    dungeon_masters = DungeonMaster.get_all()
+    players = Player.get_all()
     clear_console()
-    for dungeon_master in dungeon_masters:
-        print(dungeon_master)
+    for player in players:
+        print(player)
 
 def find_by_name_player():
-    print("Enter the name of the Dungeon Master")
+    print("Enter the name of the Player")
     player_ = input("> ")
     clear_console()
     player = Player.find_by_name(player_)
     print(player) if player else print (f'{player_} is not found.')
 
-def find_by_id_dungeon_master():
-    print("Enter the ID of the Dungeon Master")
+def find_by_id_player():
+    print("Enter the ID of the Player")
     player_id_ = input("> ")
     clear_console()
     player_ = Player.find_by_id(player_id_)
-    print(player_) if player_ else print (f'Dungeon Master ID: {player_id_} not found.')
+    print(player_) if player_ else print (f'Player ID: {player_id_} not found.')
+
+def create_player():
+    print("Enter Player's name")
+    player_name_ = input("> ")
+    print("Enter Player's Email address")
+    player_email_ = input("> ")
+    clear_console()
+    try:
+        if player_ := Player.create(player_name_, player_email_):
+            print(f"success: {player_} \n") 
+    except Exception as exc:
+        print("Error creating Player: ", exc, "\n")
 
 
+def updatemenu_player():
+    print("\n________Update_Menu________")
+    print("Please select what to update.\n")
+    print("1. Name")
+    print("2. Email")
+    print("3. Both")
+    print("\n0. Go Back")
+    print("___________________________")
 
+def update_player():
+    print("Enter the ID of the Player")
+    player_id_ = input("> ")
+    if player_ := Player.find_by_id(player_id_):
+        clear_console()
+        print(f'{player_}')
+        try:
+            updatemenu_player()
+            update_choice_ = input("> ")
+            if update_choice_ == "1":
+                print("Enter Player's new name")
+                player_name_ = input("> ")
+                player_.name = player_name_
+                player_.update()
+                clear_console()
+                print(f'Success: {player_}\n')
+            elif update_choice_ == "2":
+                print("Enter Player's new Email")
+                player_email_ = input("> ")
+                player_.email = player_email_
+                player_.update()
+                clear_console()
+                print(f'Success: {player_}\n')
+            elif update_choice_ == "3":
+                print("Enter Player's new name")
+                player_name_ = input("> ")
+                player_.name = player_name_
+                print("Enter Player's new Email")
+                player_email_ = input("> ")
+                player_.email = player_email_
+                player_.update()
+                clear_console()
+                print(f'Success: {player_}\n')
+            else:
+                clear_console()
+        except Exception as exc:
+            clear_console()
+            print("Error updating Player: ", exc, "\n")
+    else:
+        clear_console()
+        print(f'Player {player_id_} not found.\n')
+
+def delete_player():
+    print("Enter the Player's id")
+    player_id_ = input("> ")
+    if player_ := Player.find_by_id(player_id_):
+        player_campaigns_ = PlayerCampaign.get_all()
+        for player_campaign in player_campaigns_:
+            if player_campaign.player == int(player_id_):
+                player_campaign.delete()
+        player_.delete()
+        clear_console()
+        print(f'Player {player_id_} deleted.')
+    else:
+        clear_console()
+        print(f'Player {player_id_} not found.')
 
 def add_campaign():
     print("Enter the ID of the Player")
@@ -303,7 +385,7 @@ def add_campaign():
     print("Enter the ID of the Campaign")
     campaign_id_ = input("> ")
     try:
-        PlayerCampaign.create(player_id_, campaign_id_)
+        PlayerCampaign.create(int(player_id_), int(campaign_id_))
     except Exception as exc:
         print("Raised Exception, ", exc)
 

@@ -11,6 +11,9 @@ class Player(PlayerMethods):
         self.name = name
         self.email = email
         self.id = id
+
+    def __repr__(self):
+        return f"({self.id}) Name: {self.name}, Email: {self.email}"
     
     @property
     def name(self):

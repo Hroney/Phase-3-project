@@ -99,7 +99,7 @@ class PlayerCampaignMethods:
         CONN.commit()
 
     def delete(self):
-        """Delete the table row corresponding to the current Player instance,
+        """Delete the table row corresponding to the current PlayerCampaign instance,
         delete the dictionary entry, and reassign id attribute"""
 
         sql = """
