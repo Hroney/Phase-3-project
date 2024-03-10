@@ -23,7 +23,7 @@ from helpers import (
     delete_player,
     update_player,
     add_campaign,
-
+    list_campaign_by_player
 )
 
 ### Main Menu ###
@@ -162,6 +162,8 @@ def player_menu_choice():
             delete_player()
         elif player_choice == "7":
             add_campaign()
+        elif player_choice == "8":
+            list_campaign_by_player()
 
 
 
@@ -175,6 +177,7 @@ def player_menu():
     print("5. Update Player")
     print("6. Delete Player")
     print("7. Join Campaign")
+    print("8. List Campaign by Player")
 
     print("\n0. Go Back to Main Menu")
     print("___________________________")

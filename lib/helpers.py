@@ -384,12 +384,34 @@ def add_campaign():
     player_id_ = input("> ")
     print("Enter the ID of the Campaign")
     campaign_id_ = input("> ")
+    clear_console()
     try:
-        PlayerCampaign.create(int(player_id_), int(campaign_id_))
+        if player_campaign_ := PlayerCampaign.create(int(player_id_), int(campaign_id_)):
+            print(f"{Player.find_by_id(player_id_).name} has joined {Campaign.find_by_id(campaign_id_).campaign_name}")
     except Exception as exc:
         print("Raised Exception, ", exc)
 
-
+def list_campaign_by_player():
+    print("Enter the ID of the Player")
+    player_id_ = input("> ")
+    clear_console()
+    player_campaigns_ = PlayerCampaign.get_all()
+    campaigns_ = Campaign.get_all()
+    at_least_one_ = 0
+    if player_id_.isnumeric():
+        for player_campaign_ in player_campaigns_:
+            if player_campaign_.player == int(player_id_):
+                for campaign_ in campaigns_:
+                    if campaign_.id == player_campaign_.campaign:
+                        at_least_one_ += 1
+                        print(campaign_)
+    else:
+        print(f"{player_id_} is not a valid ID number")
+    if at_least_one_ == 0:
+        if Player.find_by_id(player_id_) is not None:
+            print(f"Player {Player.find_by_id(player_id_).name} is not part of a Campaign.")
+        else:
+            print(f"Not a Valid Player ID")
 
 
 def exit_program():
