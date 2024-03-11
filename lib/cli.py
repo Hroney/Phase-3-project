@@ -23,7 +23,9 @@ from helpers import (
     delete_player,
     update_player,
     add_campaign,
-    list_campaign_by_player
+    list_campaign_by_player,
+    list_players_by_campaign,
+    leave_campaign
 )
 
 ### Main Menu ###
@@ -81,6 +83,8 @@ def campaign_menu_choice():
             delete_campaign()
         elif campaign_choice == "7":
             list_campaigns_by_dungeon_master()
+        elif campaign_choice == "8":
+            list_players_by_campaign()
 
         else:
             clear_console()
@@ -95,6 +99,7 @@ def campaign_menu():
     print("5. Update Campaign")
     print("6. Delete Campaign")
     print("7. List all of a Dungeon Masters Campaigns")
+    print("8. List all Players in a Campaign")
 
     print("\n0. Go back to Main Menu")
     print("___________________________")
@@ -163,6 +168,8 @@ def player_menu_choice():
         elif player_choice == "7":
             add_campaign()
         elif player_choice == "8":
+            leave_campaign()
+        elif player_choice == "9":
             list_campaign_by_player()
 
 
@@ -177,7 +184,8 @@ def player_menu():
     print("5. Update Player")
     print("6. Delete Player")
     print("7. Join Campaign")
-    print("8. List Campaign by Player")
+    print("8. Leave Campaign")
+    print("9. List Campaign by Player")
 
     print("\n0. Go Back to Main Menu")
     print("___________________________")

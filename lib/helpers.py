@@ -106,8 +106,8 @@ def updatemenu_campaign():
 def delete_campaign():
     print("Enter the Campaign's id")
     campaign_id_ = input("> ")
+    player_campaigns_ = PlayerCampaign.get_all()
     if campaign_ := Campaign.find_by_id(campaign_id_):
-        player_campaigns_ = PlayerCampaign.get_all()
         for player_campaign_ in player_campaigns_:
             if player_campaign_.campaign == int(campaign_id_):
                 player_campaign_.delete()
@@ -118,7 +118,18 @@ def delete_campaign():
         clear_console()
         print(f'Campaign {campaign_id_} not found.')
 
-
+def list_players_by_campaign():
+    print("Enter the Campaign's ID")
+    campaign_id_ = input("> ")
+    player_campaigns_ = PlayerCampaign.get_all()
+    if campaign_ := Campaign.find_by_id(campaign_id_):
+        clear_console()
+        for player_campaign_ in player_campaigns_:
+            if player_campaign_.campaign == int(campaign_id_):
+                print(Player.find_by_id(int(player_campaign_.player)))
+    else:
+        clear_console()
+        print(f'Campaign {campaign_id_} not found.')
 
 ### Dungeon Master Helpers ###
 def list_dungeonmasters():
@@ -279,12 +290,24 @@ def list_campaigns_by_dungeon_master():
                 print(f"{dungeon_master_id_} is not a valid dungeon master ID")
 
 ### Player Helpers ###
+                
+def campaign_list(player):
+    player_campaigns_ = PlayerCampaign.get_all()
+    returnstring = "     Campaigns: "
+    for player_campaign in player_campaigns_:
+        if player_campaign.player == player.id:
+            returnstring += f"{Campaign.find_by_id(player_campaign.campaign).campaign_name}, "
+    if returnstring == "     Campaigns: ":
+        return "     Not in a Campaign."
+    return returnstring[:-2]
 
 def list_players():
     players = Player.get_all()
     clear_console()
     for player in players:
         print(player)
+        print(campaign_list(player),f"\n")
+
 
 def find_by_name_player():
     print("Enter the name of the Player")
@@ -391,6 +414,24 @@ def add_campaign():
     except Exception as exc:
         print("Raised Exception, ", exc)
 
+
+def leave_campaign():
+    print("Enter the ID of the Player")
+    player_id_ = input("> ")
+    clear_console()
+    player_campaigns_ = PlayerCampaign.get_all()
+    if player_id_.isnumeric():
+        for player_campaign_ in player_campaigns_:
+            if player_campaign_.player == int(player_id_):
+                print(Campaign.find_by_id(player_campaign_.campaign))
+        print("\nEnter the ID of the Campaign you wish to leave")
+        delete_choice_ = input("> ")
+        for player_campaign_ in player_campaigns_:
+            if (player_campaign_.player == int(player_id_)) and (player_campaign_.campaign == int(delete_choice_)):
+                player_campaign_.delete()
+        clear_console()
+        print(f"{Player.find_by_id(int(player_id_)).name} left {Campaign.find_by_id(int(delete_choice_)).campaign_name}")
+
 def list_campaign_by_player():
     print("Enter the ID of the Player")
     player_id_ = input("> ")
@@ -401,10 +442,8 @@ def list_campaign_by_player():
     if player_id_.isnumeric():
         for player_campaign_ in player_campaigns_:
             if player_campaign_.player == int(player_id_):
-                for campaign_ in campaigns_:
-                    if campaign_.id == player_campaign_.campaign:
-                        at_least_one_ += 1
-                        print(campaign_)
+                print(Campaign.find_by_id(player_campaign_.campaign))
+                at_least_one_ += 1
     else:
         print(f"{player_id_} is not a valid ID number")
     if at_least_one_ == 0:

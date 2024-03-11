@@ -1,6 +1,5 @@
 from models.__init__ import CURSOR, CONN
 from models.player._Player import PlayerMethods
-from models.campaign.Campaign import Campaign
 import re
 
 class Player(PlayerMethods):
