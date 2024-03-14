@@ -135,4 +135,4 @@ class CampaignMethods:
 
     def print_info(self):
         from models.dungeon_master.Dungeon_Master import DungeonMaster
-        return f"Campaign Name: {self.campaign_name}\nDungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"
+        return f"Campaign Name: {self.campaign_name}, Dungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"
