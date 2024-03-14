@@ -11,8 +11,8 @@ class Campaign(CampaignMethods):
         self.campaign_name = campaign_name
         self.dungeon_master_id = dungeon_master_id
 
-    def __repr__(self):
-        return f"({self.id}) Campaign: {self.campaign_name}, Dungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"
+    # def __repr__(self):
+    #     return f"({self.id}) Campaign: {self.campaign_name}, Dungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"
 
     @property
     def campaign_name(self):

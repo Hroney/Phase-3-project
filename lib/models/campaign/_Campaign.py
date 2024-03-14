@@ -1,5 +1,5 @@
 from models.__init__ import CURSOR, CONN
-from models.dungeon_master.Dungeon_Master import DungeonMaster
+
 
 class CampaignMethods:
     
@@ -27,6 +27,7 @@ class CampaignMethods:
     @classmethod
     def create(cls, campaign_name: str, dungeon_master: int):
         """ Initialize a new Campaign instance and save the object to the database """
+        from models.dungeon_master.Dungeon_Master import DungeonMaster
         if DungeonMaster.find_by_id(dungeon_master):
             try:    
                 campaign = cls(campaign_name, dungeon_master)
@@ -131,3 +132,7 @@ class CampaignMethods:
 
         # Set the id to None
         self.id = None
+
+    def print_info(self):
+        from models.dungeon_master.Dungeon_Master import DungeonMaster
+        return f"Campaign Name: {self.campaign_name}\nDungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"

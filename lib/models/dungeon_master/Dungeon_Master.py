@@ -10,8 +10,8 @@ class DungeonMaster(DungeonMasterMethods):
         self.modality = modality
         self.id = id
 
-    def __repr__(self):
-        return f"({self.id}) Name: {self.name}, Sessions are held: {self.modality}"
+    # def __repr__(self):
+    #     return f"({self.id}) Name: {self.name}, Sessions are held: {self.modality}"
 
     @property
     def name(self):

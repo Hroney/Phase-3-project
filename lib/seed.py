@@ -34,6 +34,11 @@ def seed_database():
     karol = Player.create("Karol", "hurstvickey99@yahoo.com")
     meg = Player.create("Meg", "jeroldliu71@gmail.com")
 
+    PlayerCampaign.create(1,1)
+    PlayerCampaign.create(1,2)
+    PlayerCampaign.create(2,1)
+    PlayerCampaign.create(3,1)
+
 
 
 seed_database()

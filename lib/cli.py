@@ -4,28 +4,15 @@ from helpers import (
     exit_program,
     clear_console,
     list_campaigns,
-    create_campaign,
-    find_by_name_campaign,
-    find_by_id_campaign,
-    update_campaign,
-    delete_campaign,
     list_dungeonmasters,
-    find_by_id_dungeon_master,
-    find_by_name_dungeon_master,
-    create_dungeon_master,
-    update_dungeon_master,
+    delete_campaign,
+    update_campaign_name,
+    update_campaign_dm,
     delete_dungeon_master,
-    list_campaigns_by_dungeon_master,
-    list_players,
-    find_by_name_player,
-    find_by_id_player,
-    create_player,
-    delete_player,
-    update_player,
-    add_campaign,
-    list_campaign_by_player,
-    list_players_by_campaign,
-    leave_campaign
+    create_a_campaign,
+    cancel_a_campaign,
+    update_dm_modality,
+    
 )
 
 ### Main Menu ###
@@ -35,157 +22,158 @@ def main():
         clear_console()
         main_menu()
         main_choice = input("> ")
-
         if main_choice == "0":
             exit_program()
         elif main_choice == "1":
             clear_console()
+            print()
             campaign_menu_choice()
         elif main_choice == "2":
             clear_console()
+            print()
             dungeon_master_menu_choice()
         elif main_choice == "3":
             clear_console()
             player_menu_choice()
-                    
         else:
             print("Invalid choice")
 
 
 def main_menu():
-    print("\n_________Main_Menu_________")
-    print("  Please select an option:\n")
-    print("1. Campaign Menu")
-    print("2. Dungeon Master Menu")
+    print("\n\n\nMain Menu:\n")
+    print("1. Campaign List")
+    print("2. Dungeon Master List")
     print("3. Player Menu")
-
-    print("\n0. Exit the program")
-    print("___________________________")
+    print("4. Creation List")
+    print("\n0. Exit the program\n")
+    print("Please select an option:")
+    
 
 ### Campaign Menu ###
-def campaign_menu_choice():
-    while True:
-        campaign_menu()
-        campaign_choice = input("> ")
-        if campaign_choice == "0":
-            break
-        elif campaign_choice == "1":
-            list_campaigns()
-        elif campaign_choice == "2":
-            find_by_name_campaign()
-        elif campaign_choice == "3":
-            find_by_id_campaign()
-        elif campaign_choice == "4":
-            create_campaign()
-        elif campaign_choice == "5":
-            update_campaign()
-        elif campaign_choice == "6":
-            delete_campaign()
-        elif campaign_choice == "7":
-            list_campaigns_by_dungeon_master()
-        elif campaign_choice == "8":
-            list_players_by_campaign()
-
-        else:
-            clear_console()
 
 def campaign_menu():
-    print("\n_______Campaign_Menu_______")
-    print("  Please select an option:\n")
-    print("1. List all Campaigns")
-    print("2. Find Campaign by Name")
-    print("3. Find Campaign by ID")
-    print("4. Create a new Campaign")
-    print("5. Update Campaign")
-    print("6. Delete Campaign")
-    print("7. List all of a Dungeon Masters Campaigns")
-    print("8. List all Players in a Campaign")
+    print("\n\n1. Change Campaign Name")
+    print("2. Change Campaign Ownership")
+    print("3. End Campaign")
+    print("\n0. Go Back\n")
+    print("Please select an option:")
+    
 
-    print("\n0. Go back to Main Menu")
-    print("___________________________")
+def campaign_menu_choice():
+    while True:
+        campaigns = list_campaigns()
+        if len(campaigns):
+            print("\n0. Main Menu")
+            print("\nPlease select a Campaign:")
+            try:
+                input_choice = int(input("> "))
+                clear_console()
+                if input_choice == 0:
+                    break
+                if type(input_choice) == int:
+                    try:
+                        campaign_choice = campaigns[input_choice-1]
+                        print(f"\n{campaign_choice.print_info()}")
+                        campaign_menu()
+                        menu_choice = input("> ")
+                        while True:
+                            if menu_choice == "0":
+                                clear_console()
+                                print()
+                                break
+                            elif menu_choice == "1":
+                                update_campaign_name(campaign_choice)
+                                break
+                            elif menu_choice == "2":
+                                update_campaign_dm(campaign_choice)
+                                break
+                            elif menu_choice == "3":
+                                delete_campaign(campaign_choice)
+                                break
+                            else:
+                                print("That's not a valid choice.")
+                                break
+                    except IndexError:
+                        print("Not a valid choice.")
+            except ValueError:
+                print("Not a valid choice.")
+        else:
+            print("There are No Campaigns")
+            break
 
 ### Dungeon Master Menu ###
 
+def dungeon_master_menu():
+    print("\n1. Start a new Campaign")
+    print("2. Cancel a Campaign")
+    print("3. Change modality")
+    print("\n0. Go Back\n")
+    print("Please select an option:")
+
 def dungeon_master_menu_choice():
     while True:
-        dungeon_master_menu()
-        dungeon_master_choice = input("> ")
-        if dungeon_master_choice == "0":
-            break
-        elif dungeon_master_choice == "1":
-            list_dungeonmasters()
-        elif dungeon_master_choice == "2":
-            find_by_name_dungeon_master()
-        elif dungeon_master_choice == "3":
-            find_by_id_dungeon_master()
-        elif dungeon_master_choice == "4":
-            create_dungeon_master()
-        elif dungeon_master_choice == "5":
-            update_dungeon_master()
-        elif dungeon_master_choice == "6":
-            delete_dungeon_master()
-        elif dungeon_master_choice == "7":
-            list_campaigns_by_dungeon_master()
-        
-        else:
-            clear_console()
+        dungeon_masters = list_dungeonmasters()
+        if len(dungeon_masters):
+            print("\n0. Main Menu")
+            print("\nPlease select a Dungeon Master:")
+            try:
+                input_choice = int(input("> "))
+                clear_console()
+                if input_choice == 0:
+                    break
+                if type(input_choice) == int:
+                    try:
+                        dungeon_master_choice = dungeon_masters[input_choice-1]
+                        print(f"\n{dungeon_master_choice.print_info()}")
+                        dungeon_master_menu()
+                        menu_choice = input("> ")
+                        while True:
+                            if menu_choice == "0":
+                                clear_console()
+                                print()
+                                break
+                            elif menu_choice == "1":
+                                create_a_campaign(dungeon_master_choice)
+                                break
+                            elif menu_choice == "2":
+                                cancel_a_campaign(dungeon_master_choice)
+                                break
+                            elif menu_choice == "3":
+                                print("1. Online\n2.In-Person\n\n0. Go Back")
+                                try:
+                                    modality_int = int(input("> "))
+                                    if modality_int == 0:
+                                        break
+                                    update_dm_modality(dungeon_master_choice, modality_int)
+                                except ValueError:
+                                    print("That's not a valid choice.")
+                                break
+                            else:
+                                print("That's not a valid choice.")
+                                break
+                    except IndexError:
+                        print("Not a valid choice.")
+            except ValueError:
+                print("That's not a valid choice.")
+            
 
-def dungeon_master_menu():
-    print("\n____Dungeon_Master_Menu____")
-    print("  Please select an option:\n")
-    print("1. List all Dungeon Masters")
-    print("2. Find Dungeon Master by Name")
-    print("3. Find Dungeon Master by ID")
-    print("4. Create Dungeon Master")
-    print("5. Update Dungeon Master")
-    print("6. Delete Dungeon Master")
-    print("7. Find Campaigns by Dungeon Master")
-
-    print("\n0. Go Back to Main Menu")
-    print("___________________________")
 
 
 ### Player Menu ###
     
 def player_menu_choice():
+    list_players()
     while True:
         player_menu()
         player_choice = input("> ")
         if player_choice == "0":
             break
-        elif player_choice == "1":
-            list_players()
-        elif player_choice == "2":
-            find_by_name_player()
-        elif player_choice == "3":
-            find_by_id_player()
-        elif player_choice == "4":
-            create_player()
-        elif player_choice == "5":
-            update_player()
-        elif player_choice == "6":
-            delete_player()
-        elif player_choice == "7":
-            add_campaign()
-        elif player_choice == "8":
-            leave_campaign()
-        elif player_choice == "9":
-            list_campaign_by_player()
 
 
 
 def player_menu():
     print("\n_______Player_Menu_______")
     print("  Please select an option:\n")
-    print("1. List all Players")
-    print("2. Find Player by Name")
-    print("3. Find Player by ID")
-    print("4. Create Player")
-    print("5. Update Player")
-    print("6. Delete Player")
-    print("7. Join Campaign")
-    print("8. Leave Campaign")
-    print("9. List Campaign by Player")
 
     print("\n0. Go Back to Main Menu")
     print("___________________________")

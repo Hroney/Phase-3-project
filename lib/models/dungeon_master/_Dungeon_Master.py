@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 
+
 class DungeonMasterMethods:
 
     @classmethod
@@ -125,3 +126,23 @@ class DungeonMasterMethods:
 
         # Set the id to None
         self.id = None
+
+    def campaigns(self):
+        from models.campaign.Campaign import Campaign
+        sql = """
+            SELECT * FROM campaigns
+            WHERE dungeon_master = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+
+        rows = CURSOR.fetchall()
+        return [
+            Campaign.instance_from_db(row) for row in rows
+        ]
+
+    def print_info(self):
+        from models.campaign.Campaign import Campaign
+        campaigns_info = ", ".join(campaign.campaign_name for campaign in self.campaigns())
+        return f"Name: {self.name}\nModality: {self.modality}\nCampaigns: {campaigns_info}"
+
+
