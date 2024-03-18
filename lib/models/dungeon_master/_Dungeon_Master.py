@@ -73,15 +73,15 @@ class DungeonMasterMethods:
         return cls.instance_from_db(row) if row else None
 
     @classmethod
-    def find_by_name(cls, dungeonmaster):
+    def find_by_name(cls, name):
         """Return a Dungeon Master object corresponding to first table row matching specified Dungeon Master name"""
         sql = """
             SELECT *
             FROM dungeonmasters
-            WHERE dungeonmaster is ?
+            WHERE name is ?
         """
 
-        row = CURSOR.execute(sql, (dungeonmaster,)).fetchone()
+        row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     def save(self):
@@ -131,7 +131,7 @@ class DungeonMasterMethods:
         from models.campaign.Campaign import Campaign
         sql = """
             SELECT * FROM campaigns
-            WHERE dungeon_master = ?
+            WHERE dungeon_master_id = ?
         """
         CURSOR.execute(sql, (self.id,),)
 
@@ -140,9 +140,6 @@ class DungeonMasterMethods:
             Campaign.instance_from_db(row) for row in rows
         ]
 
-    def print_info(self):
-        from models.campaign.Campaign import Campaign
-        campaigns_info = ", ".join(campaign.campaign_name for campaign in self.campaigns())
-        return f"Name: {self.name}\nModality: {self.modality}\nCampaigns: {campaigns_info}"
+
 
 

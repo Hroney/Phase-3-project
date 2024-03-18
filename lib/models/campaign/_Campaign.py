@@ -9,8 +9,8 @@ class CampaignMethods:
         sql = """
             CREATE TABLE IF NOT EXISTS campaigns (
             id INTEGER PRIMARY KEY,
-            campaign_name TEXT,
-            dungeon_master INT)
+            name TEXT,
+            dungeon_master_id INT)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -25,12 +25,12 @@ class CampaignMethods:
         CONN.commit()
 
     @classmethod
-    def create(cls, campaign_name: str, dungeon_master: int):
+    def create(cls, name: str, dungeon_master_id: int):
         """ Initialize a new Campaign instance and save the object to the database """
         from models.dungeon_master.Dungeon_Master import DungeonMaster
-        if DungeonMaster.find_by_id(dungeon_master):
+        if DungeonMaster.find_by_id(dungeon_master_id):
             try:    
-                campaign = cls(campaign_name, dungeon_master)
+                campaign = cls(name, dungeon_master_id)
                 campaign.save()
                 return campaign
             except Exception as exc:
@@ -45,7 +45,7 @@ class CampaignMethods:
         campaign = cls.all.get(row[0])
         if campaign:
             # ensure attributes match row values in case local instance was modified
-            campaign.campaign_name = row[1]
+            campaign.name = row[1]
             campaign.dungeon_master_id = row[2]
         else:
             # not in dictionary, create new instance and add to dictionary
@@ -79,27 +79,27 @@ class CampaignMethods:
         return cls.instance_from_db(row) if row else None
 
     @classmethod
-    def find_by_name(cls, campaign_name):
+    def find_by_name(cls, name):
         """Return a Campaign object corresponding to first table row matching specified campaign name"""
         sql = """
             SELECT *
             FROM campaigns
-            WHERE campaign_name is ?
+            WHERE name is ?
         """
 
-        row = CURSOR.execute(sql, (campaign_name,)).fetchone()
+        row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     def save(self):
-        """ Insert a new row with the campaign_name and dungeon_master values of the current Campaign instance.
+        """ Insert a new row with the name and dungeon_master values of the current Campaign instance.
         Update object id attribute using the primary key value of new row.
         Save the object in local dictionary using table row's PK as dictionary key"""
         sql = """
-            INSERT INTO campaigns (campaign_name, dungeon_master)
+            INSERT INTO campaigns (name, dungeon_master_id)
             VALUES (?, ?)
         """
 
-        CURSOR.execute(sql, (self.campaign_name, self.dungeon_master_id))
+        CURSOR.execute(sql, (self.name, self.dungeon_master_id))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -109,10 +109,10 @@ class CampaignMethods:
         """Update the table row corresponding to the current Campaign instance."""
         sql = """
             UPDATE campaigns
-            SET campaign_name = ?, dungeon_master = ?
+            SET name = ?, dungeon_master_id = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.campaign_name, self.dungeon_master_id, self.id))
+        CURSOR.execute(sql, (self.name, self.dungeon_master_id, self.id))
         CONN.commit()
 
     def delete(self):
@@ -132,7 +132,3 @@ class CampaignMethods:
 
         # Set the id to None
         self.id = None
-
-    def print_info(self):
-        from models.dungeon_master.Dungeon_Master import DungeonMaster
-        return f"Campaign Name: {self.campaign_name}, Dungeon Master: {DungeonMaster.find_by_id(self.dungeon_master_id).name}"

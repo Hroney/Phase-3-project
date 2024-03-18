@@ -12,7 +12,9 @@ from helpers import (
     create_a_campaign,
     cancel_a_campaign,
     update_dm_modality,
-    create_dungeon_master
+    create_dungeon_master,
+    print_info_campaign,
+    print_info_dungeon_master
 )
 
 ### Main Menu ###
@@ -77,7 +79,7 @@ def campaign_menu_choice():
                 if type(input_choice) == int:
                     try:
                         campaign_choice = campaigns[input_choice-1]
-                        print(f"\n{campaign_choice.print_info()}")
+                        print(f"\n{print_info_campaign(campaign_choice)}")
                         campaign_menu()
                         menu_choice = input("> ")
                         while True:
@@ -132,7 +134,7 @@ def dungeon_master_menu_choice():
                 if type(input_choice) == int:
                     try:
                         dungeon_master_choice = dungeon_masters[input_choice-1]
-                        print(f"\n{dungeon_master_choice.print_info()}")
+                        print(f"\n{print_info_dungeon_master(dungeon_master_choice)}")
                         dungeon_master_menu()
                         menu_choice = input("> ")
                         while True:
